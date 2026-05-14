@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Param, ParseIntPipe, ValidationPipe } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { CreatePostsDto } from './dto/createPostsDto';
+import { CreatePostsDto } from './posts.dto';
 
 @Controller('posts')
 export class PostsController {

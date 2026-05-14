@@ -1,18 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/CreateUserDto';
-import { UpdateUserDto } from './dto/UpdateUserDto';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { MESSAGES } from '../common/constants';
 
 @Injectable()
 export class UsersService {
-    // private users = [
-    //     {
-    //         id: 1,
-    //         name: "a",
-    //         age: 100
-    //     }
-    // ];
 
     constructor(private prisma: PrismaService) {}
 
@@ -24,8 +17,12 @@ export class UsersService {
                 }
             })
         }
-
-        return await this.prisma.user.findMany();
+        const users = await this.prisma.user.findMany({
+            include: {
+                posts: true
+            }
+        });
+        return users;
     }
 
     async getById(id: number){
@@ -39,55 +36,49 @@ export class UsersService {
     }
 
     async create(createUserDto: CreateUserDto) {
-        // const newUser = {
-        //     id: this.users.length + 1,
-        //     ...createUserDto
-        // }
-        // this.users.push(newUser);
-        // return this.users;
         const createdUser = await this.prisma.user.create({
             data: createUserDto
         });
-        return createdUser;
+        return {
+            statusCode: 201,
+            message: MESSAGES.POST_CREATED
+        };
     }
 
     async update(id: number, createUserDto: CreateUserDto) {
-    //     const index = this.users.findIndex(user => user.id === id)
-    //     return this.users[index] = {
-    //         id: Number(id),
-    //         ...user
-    //     }
-        return this.prisma.user.update({
+        const updatedUser = this.prisma.user.update({
                 where: {
                     id: id,
                 },
                 data: createUserDto
             })
+        return {
+            statusCode: 201,
+            message: MESSAGES.USER_UPDATED
+        };
     }
 
     async updateField(id: number, updateUserDto: UpdateUserDto) {
-    //     const index = this.users.findIndex(
-    //         user => user.id === Number(id)
-    //     );
-    //     return this.users[index] = {
-    //         ...this.users[index],
-    //         ...users
-    //     };
-        return this.prisma.user.update({
+        const updatedUser =  this.prisma.user.update({
                 where: {              id: id,
                 },
                 data: updateUserDto
             })
+        return {
+            statusCode: 201,
+            message: MESSAGES.USER_UPDATED
+        };
     }
 
     async delete(id: number) {
-    //     const removedUser = this.getById(id);
-    //     this.users = this.users.filter(user => user.id !== id);
-    //     return removedUser;
-        return this.prisma.user.delete({
+        const deletedUser = this.prisma.user.delete({
             where: {
                     id: id,
                 }
         })
+        return {
+            statusCode: 200,
+            message: MESSAGES.USER_DELETED
+        }; ;
     }
 }

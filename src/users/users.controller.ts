@@ -12,8 +12,7 @@ import {
     ValidationPipe,
  } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/CreateUserDto';
-import { UpdateUserDto } from './dto/UpdateUserDto';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
 import {
     SwaggerModule, 
     ApiQuery 

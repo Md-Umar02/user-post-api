@@ -8,17 +8,23 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  age   Int
+  id         Int       @id @default(autoincrement())
+  name       String
+  age        Int
 
-  posts Post[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  posts      Post[]
 }
 
 model Post {
-  id      Int    @id @default(autoincrement())
-  title   String
+  id         Int       @id @default(autoincrement())
+  title      String
 
-  userId  Int
-  user    User   @relation(fields: [userId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id])
 }
