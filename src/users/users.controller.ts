@@ -23,7 +23,6 @@ import {
 export class UsersController {
     constructor(private userService: UsersService) { }
 
-    @Get(':id')
     async getById(@Param('id', ParseIntPipe) id: number) {
         return await this.userService.getById(id);
     }

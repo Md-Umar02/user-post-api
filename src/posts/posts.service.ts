@@ -28,4 +28,13 @@ export class PostsService {
 
         return createdPost;
     }
+
+    async findAll(userId: number) {
+        const users = await this.prisma.post.findMany({
+            where: {
+                userId
+            }
+        });
+        return users;
+    }
 }

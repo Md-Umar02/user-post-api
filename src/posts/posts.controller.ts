@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, ParseIntPipe, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, Param, ParseIntPipe, ValidationPipe, Get } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostsDto } from './posts.dto';
 
@@ -7,7 +7,12 @@ export class PostsController {
     constructor(private postsService: PostsService){}
 
     @Post(':userId')
-    getAll(@Param('userId', ParseIntPipe) userId: number, @Body(ValidationPipe) createPostsDto: CreatePostsDto) {
+    create(@Param('userId', ParseIntPipe) userId: number, @Body(ValidationPipe) createPostsDto: CreatePostsDto) {
         return this.postsService.create(userId, createPostsDto);
+    }
+
+    @Get(':userId')
+    async findAll(@Param('userId', ParseIntPipe) userId: number){
+        return await this.postsService.findAll(userId);
     }
 }
